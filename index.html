@@ -360,7 +360,7 @@
             text-align: center;
         }
 
-        /* Форма (Google Forms) — исправлено для кликабельности */
+        /* Форма (Google Forms) */
         .google-form-wrapper {
             position: relative;
             overflow: auto;
@@ -442,7 +442,7 @@
             white-space: normal;
         }
 
-        /* ========== МОБИЛЬНАЯ ВЕРСИЯ ========== */
+        /* ========== МОБИЛЬНАЯ ВЕРСИЯ (увеличенный текст) ========== */
         @media (max-width: 768px) {
             :root {
                 --fs-xxl: 34px;
@@ -475,50 +475,47 @@
             .section .verse-section p,
             .section .narrow-section p,
             .section a:not(.btn) {
-                font-size: 0.8rem !important;
-                line-height: 1.4;
-                margin-bottom: 0.5rem;
+                font-size: 0.95rem !important;
+                line-height: 1.45;
+                margin-bottom: 0.7rem;
             }
             .program-description {
-                font-size: 0.72rem;
+                font-size: 0.85rem;
+                line-height: 1.4;
             }
             .program-time {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
             }
             .timer {
                 flex-wrap: nowrap;
-                gap: 6px;
+                gap: 8px;
             }
             .timer-unit {
                 min-width: auto;
                 flex: 1;
             }
             .timer-digit {
-                font-size: 20px;
-                padding: 6px 8px;
+                font-size: 24px;
+                padding: 6px 10px;
             }
             .labels {
-                gap: 4px;
+                gap: 6px;
             }
             .labels span {
-                font-size: 8px;
+                font-size: 10px;
                 width: auto;
             }
             .calendar-row {
-                grid-template-columns: repeat(7, minmax(24px, 1fr));
-                gap: 4px;
-                max-width: 280px;
+                grid-template-columns: repeat(7, minmax(26px, 1fr));
+                gap: 5px;
+                max-width: 300px;
             }
             .calendar-cell {
-                font-size: 10px;
-                padding: 4px 0;
+                font-size: 11px;
+                padding: 5px 0;
             }
             .calendar-cell.highlight {
-                padding: 2px 0;
-                border-width: 1px;
-            }
-            .google-form-wrapper {
-                max-width: 100%;
+                padding: 3px 0;
             }
             .google-form-wrapper iframe {
                 height: 780px;
@@ -693,11 +690,13 @@
     </main>
     <script>
         (function() {
+            // Preloader
             window.addEventListener('load', () => {
                 document.getElementById('preloader')?.classList.add('hidden');
                 document.body.classList.add('loaded');
             });
 
+            // Анимация букв
             document.querySelectorAll('.animate-letter').forEach(el => {
                 if (el.children.length && el.querySelector('span.animate-letter')) return;
                 let text = el.dataset.animate || el.innerText;
@@ -707,6 +706,7 @@
                 el.classList.remove('animate-letter');
             });
 
+            // Таймер
             const wedding = new Date("2026-06-20T14:10:00+03:00");
             const timerEl = document.getElementById('timer');
             function updateTimer() {
@@ -742,6 +742,7 @@
             updateTimer();
             setInterval(updateTimer, 1000);
 
+            // Календарь
             const calendarEl = document.getElementById('calendar');
             if (calendarEl) {
                 const daysOfWeek = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
@@ -766,6 +767,7 @@
                 });
             }
 
+            // Подсказки для цветов
             const swatches = document.querySelectorAll('.swatch');
             let tooltip = null;
             function showColorTooltip(colorName, x, y) {
@@ -793,6 +795,7 @@
                 });
             });
 
+            // Анимация программы
             const programItems = document.querySelectorAll('.program-item');
             const programSection = document.getElementById('section-program');
             const programObserver = new IntersectionObserver((entries) => {
@@ -810,6 +813,7 @@
                 programItems.forEach((item, idx) => setTimeout(() => item.classList.add('visible'), idx * 200));
             }
 
+            // Анимация секций
             const sections = document.querySelectorAll('.section');
             const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -821,6 +825,7 @@
             }, { threshold: 0.1 });
             sections.forEach(section => sectionObserver.observe(section));
 
+            // Кнопка "Наверх"
             const scrollBtn = document.getElementById('scrollTop');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 300) scrollBtn.classList.add('visible');
@@ -828,6 +833,7 @@
             });
             scrollBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+            // Скролл по якорям
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -835,6 +841,45 @@
                     if (target) target.scrollIntoView({ behavior: 'smooth' });
                 });
             });
+
+            // === НАДЁЖНЫЙ ЗАПУСК ФОНОВОГО ВИДЕО ===
+            const bgVideo = document.querySelector('.site-background-video');
+            if (bgVideo) {
+                let videoStarted = false;
+                
+                function startVideo() {
+                    if (videoStarted) return;
+                    if (bgVideo.readyState >= 2) { // достаточно загружено
+                        bgVideo.play().then(() => {
+                            videoStarted = true;
+                            // убираем слушатели после успешного старта
+                            document.removeEventListener('click', startVideo);
+                            document.removeEventListener('touchstart', startVideo);
+                            window.removeEventListener('scroll', startVideo);
+                        }).catch(e => {
+                            console.log('video autoplay blocked, waiting for user interaction');
+                        });
+                    } else {
+                        // видео ещё не загрузилось, пробуем позже
+                        bgVideo.addEventListener('canplaythrough', function onCanPlay() {
+                            bgVideo.play().then(() => {
+                                videoStarted = true;
+                                document.removeEventListener('click', startVideo);
+                                document.removeEventListener('touchstart', startVideo);
+                                window.removeEventListener('scroll', startVideo);
+                                bgVideo.removeEventListener('canplaythrough', onCanPlay);
+                            }).catch(() => {});
+                        }, { once: true });
+                    }
+                }
+
+                // Пытаемся запустить сразу
+                startVideo();
+                // Если не вышло — запускаем при любом взаимодействии
+                document.addEventListener('click', startVideo);
+                document.addEventListener('touchstart', startVideo);
+                window.addEventListener('scroll', startVideo);
+            }
         })();
     </script>
 </body>
