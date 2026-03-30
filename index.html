@@ -45,6 +45,7 @@
         }
         html {
             scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
         }
         body {
             margin: 0;
@@ -86,10 +87,17 @@
         }
         .blob {
             position: absolute;
-            border-radius: 50%;
             filter: blur(70px);
             opacity: 0.35;
             pointer-events: none;
+            will-change: transform;
+            border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+            animation: morph 20s infinite ease-in-out;
+        }
+        @keyframes morph {
+            0% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
+            50% { border-radius: 60% 40% 40% 60% / 40% 60% 40% 60%; }
+            100% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
         }
         .blob-1 {
             width: 70vw;
@@ -97,7 +105,10 @@
             background: radial-gradient(circle, #ffdbb5, #ffc28a);
             top: -20vh;
             left: -20vw;
-            animation: floatBlob 38s infinite alternate ease-in-out;
+            animation-duration: 60s;
+            animation-name: floatBlob, morph;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
         }
         .blob-2 {
             width: 80vh;
@@ -105,7 +116,8 @@
             background: radial-gradient(circle, #f8d5a8, #eeb47a);
             bottom: -20vh;
             right: -20vw;
-            animation: floatBlob2 42s infinite alternate ease-in-out;
+            animation-duration: 80s;
+            animation-name: floatBlob2, morph;
         }
         .blob-3 {
             width: 60vw;
@@ -113,7 +125,8 @@
             background: radial-gradient(circle, #ffe4bc, #f7cf9c);
             top: 30vh;
             right: -15vw;
-            animation: floatBlob3 36s infinite alternate ease-in-out;
+            animation-duration: 100s;
+            animation-name: floatBlob3, morph;
         }
         .blob-4 {
             width: 50vh;
@@ -121,7 +134,8 @@
             background: radial-gradient(circle, #ffddb0, #f5c28a);
             bottom: 10vh;
             left: -10vw;
-            animation: floatBlob4 44s infinite alternate ease-in-out;
+            animation-duration: 120s;
+            animation-name: floatBlob4, morph;
         }
         .blob-5 {
             width: 45vw;
@@ -129,7 +143,8 @@
             background: radial-gradient(circle, #ffd4a5, #f7bc7a);
             top: 60vh;
             left: 20vw;
-            animation: floatBlob5 32s infinite alternate ease-in-out;
+            animation-duration: 90s;
+            animation-name: floatBlob5, morph;
         }
         @keyframes floatBlob {
             0% { transform: translate(0, 0) scale(1); }
@@ -151,34 +166,63 @@
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(12%, -4%) scale(1.1); }
         }
+
         .particles {
             position: absolute;
             width: 100%;
             height: 100%;
             background-image: radial-gradient(circle at 20% 40%, rgba(255,240,210,0.2) 1px, transparent 1px),
                               radial-gradient(circle at 80% 70%, rgba(255,220,160,0.25) 1px, transparent 1px);
-            background-size: 60px 60px, 80px 80px;
+            background-size: 80px 80px, 100px 100px;
             background-repeat: repeat;
-            animation: particleDrift 60s linear infinite;
+            animation: particleDrift 120s linear infinite;
             pointer-events: none;
-            opacity: 0.5;
+            opacity: 0.3;
         }
         @keyframes particleDrift {
             0% { background-position: 0 0, 0 0; }
             100% { background-position: 200px 200px, -300px 150px; }
         }
+
         .glow {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255,245,225,0.2) 0%, transparent 70%);
+            background: radial-gradient(circle at 30% 30%, rgba(255,240,210,0.3), transparent 60%),
+                        radial-gradient(circle at 70% 70%, rgba(255,220,180,0.2), transparent 60%);
+            animation: glowMove 20s infinite alternate ease-in-out;
             pointer-events: none;
-            animation: glowPulse 12s infinite alternate;
+            will-change: transform;
         }
-        @keyframes glowPulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.8; }
+        @keyframes glowMove {
+            0% { background-position: 30% 30%, 70% 70%; }
+            100% { background-position: 60% 40%, 40% 80%; }
         }
+
+        .haze {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(40px);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .floating-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            animation: floatDot 20s infinite ease-in-out;
+            pointer-events: none;
+        }
+        @keyframes floatDot {
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-40px); opacity: 0; }
+        }
+
         .canvas-texture {
             position: absolute;
             width: 100%;
@@ -198,9 +242,21 @@
             z-index: -1;
         }
 
+        /* Градиентное затемнение под текст */
+        .section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.15));
+            pointer-events: none;
+            z-index: 1;
+        }
+
         h1, h2, h3 {
             margin-bottom: var(--space-md);
             line-height: 1.2;
+            position: relative;
+            z-index: 2;
         }
         h1 { font-size: var(--fs-xxl); }
         h2 { font-size: var(--fs-xl); }
@@ -231,6 +287,8 @@
             font-weight: 500;
             color: #000000;
             margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 2;
         }
         .section a:not(.btn) {
             color: var(--color-accent);
@@ -240,6 +298,8 @@
         .font-script {
             font-family: 'Great Vibes', cursive;
             transition: text-shadow 0.3s;
+            position: relative;
+            z-index: 2;
         }
         .font-script:hover {
             text-shadow: 0 0 15px white, 0 0 30px rgba(255,255,255,0.8);
@@ -259,9 +319,23 @@
             overflow: hidden;
             width: 100%;
             background: transparent;
+            scroll-snap-align: start;
         }
         .section.visible {
             clip-path: inset(0 0 0 0);
+        }
+        .section.visible .container {
+            animation: fadeUp 0.8s ease;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .first-section {
             clip-path: none;
@@ -273,6 +347,7 @@
             margin: 0 auto;
             position: relative;
             z-index: 10;
+            /* Убрали все выделения: background, backdrop-filter, border-radius, padding — оставили только центрирование */
         }
 
         /* ----- КАЛЕНДАРЬ ----- */
@@ -282,6 +357,8 @@
             align-items: center;
             width: 100%;
             margin-top: var(--space-md);
+            position: relative;
+            z-index: 2;
         }
         .calendar-row {
             display: grid;
@@ -302,26 +379,48 @@
             cursor: default;
             background: transparent;
             font-weight: 400;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.3s, transform 0.3s;
         }
         .calendar-cell:hover {
             transform: scale(1.1);
             background: rgba(255,255,255,0.8);
         }
+        /* Новый стиль для выделенной даты (мягкое свечение) */
         .calendar-cell.highlight {
-            border: 2px solid transparent;
+            position: relative;
+            color: #000;
+            font-weight: 700;
+            background: transparent;
+            transform: scale(1);
+        }
+        .calendar-cell.highlight::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
             border-radius: 50%;
-            padding: 4px 0;
-            animation: glowPulse 2s infinite;
-            cursor: pointer;
+            background: radial-gradient(circle, rgba(255,220,180,0.8), transparent 70%);
+            z-index: -1;
+            filter: blur(6px);
         }
-        .calendar-cell.today {
-            background: rgba(139,90,43,0.2);
-            font-weight: bold;
+        .calendar-cell.highlight::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            border: 1px solid rgba(139,90,43,0.4);
+            z-index: -1;
         }
-        @keyframes glowPulse {
-            0% { box-shadow: 0 0 0 0 rgba(0,0,0,0.3); }
-            50% { box-shadow: 0 0 20px 5px rgba(139,90,43,0.5); }
-            100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.3); }
+        .calendar-cell.clicked {
+            transform: scale(1.3);
+            transition: transform 0.2s;
+        }
+        @media (hover: none) {
+            .calendar-cell:hover {
+                transform: none;
+                background: none;
+            }
         }
 
         /* ----- ПРОГРАММА ----- */
@@ -329,6 +428,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: var(--space-md) 0;
+            position: relative;
         }
         .program-item {
             display: flex;
@@ -340,6 +440,7 @@
             transform: translateY(30px) scale(0.98);
             filter: blur(4px);
             transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), filter 0.8s ease;
+            position: relative;
         }
         .program-item.visible {
             opacity: 1;
@@ -353,11 +454,7 @@
             overflow: hidden;
             box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2);
             transition: var(--transition-smooth);
-            background: #f5e5d0; /* fallback цвет */
-        }
-        .program-photo:hover {
-            transform: scale(1.02);
-            box-shadow: 0 30px 40px -20px rgba(0,0,0,0.3);
+            background: #f5e5d0;
         }
         .program-photo img {
             width: 100%;
@@ -365,6 +462,13 @@
             display: block;
             object-fit: cover;
             transition: transform 0.5s ease;
+            transform: scale(1.05);
+        }
+        .program-item.visible .program-photo img {
+            transform: scale(1);
+        }
+        .program-photo:hover img {
+            transform: scale(1.02);
         }
         .program-time {
             font-size: 3rem;
@@ -405,6 +509,50 @@
             }
         }
 
+        /* Мобильная версия: timeline линия */
+        @media (max-width: 768px) {
+            .program-timeline::before {
+                content: '';
+                position: absolute;
+                left: 20px;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                background: rgba(139,90,43,0.3);
+                z-index: 1;
+            }
+            .program-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-left: 50px;
+                position: relative;
+            }
+            .program-item::before {
+                content: '';
+                position: absolute;
+                left: 12px;
+                width: 16px;
+                height: 16px;
+                background: var(--color-accent);
+                border-radius: 50%;
+                z-index: 2;
+                top: 20px;
+            }
+            .program-text {
+                text-align: left;
+            }
+            .program-photo {
+                max-width: 100%;
+            }
+            .program-time {
+                font-size: 1.8rem;
+            }
+            .program-description {
+                font-size: 0.9rem;
+                margin: 0;
+            }
+        }
+
         /* ЦВЕТОВЫЕ ПЛАШКИ */
         .colors {
             display: flex;
@@ -412,6 +560,8 @@
             gap: var(--space-sm);
             justify-content: center;
             margin: var(--space-lg) 0;
+            position: relative;
+            z-index: 2;
         }
         .swatch {
             width: 50px;
@@ -456,6 +606,8 @@
             gap: var(--space-sm);
             justify-content: center;
             flex-wrap: nowrap;
+            position: relative;
+            z-index: 2;
         }
         .timer-unit {
             display: flex;
@@ -465,15 +617,18 @@
         }
         .timer-digit {
             backdrop-filter: blur(6px);
-            background: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.8);
             padding: var(--space-xs) var(--space-md);
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow-sm);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
             font-weight: bold;
             transition: transform 0.2s, background 0.2s;
             font-family: "Courier New", monospace;
             letter-spacing: 2px;
             font-size: 2rem;
+        }
+        .timer-digit.changed {
+            transform: scale(1.1);
         }
         .labels {
             display: flex;
@@ -550,9 +705,28 @@
             min-height: 80vh;
         }
 
+        /* Подсказка скролла */
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            opacity: 0.6;
+            animation: bounce 2s infinite;
+            z-index: 20;
+            pointer-events: none;
+        }
+        @keyframes bounce {
+            0%,100% { transform: translate(-50%,0); }
+            50% { transform: translate(-50%,10px); }
+        }
+
         /* ========== ДОПОЛНИТЕЛЬНЫЕ ПРАВКИ ========== */
         .first-section .names {
-            white-space: nowrap;
+            white-space: normal;
+            line-height: 1.2;
+            word-break: break-word;
         }
         .date-heading {
             font-size: 1.8rem !important;
@@ -569,7 +743,7 @@
             white-space: normal;
         }
 
-        /* ========== МОБИЛЬНАЯ ВЕРСИЯ (КРУПНЫЙ ТЕКСТ, КРАСИВО) ========== */
+        /* ========== МОБИЛЬНАЯ ВЕРСИЯ ========== */
         @media (max-width: 768px) {
             :root {
                 --fs-xxl: 36px;
@@ -592,10 +766,6 @@
             .dresscode-heading {
                 font-size: 1.6rem !important;
             }
-            .first-section .names {
-                font-size: 32px !important;
-                white-space: nowrap;
-            }
             .section p:not(.program-description),
             .section .deadline,
             .section .note,
@@ -606,27 +776,9 @@
                 line-height: 1.5;
                 margin-bottom: 0.8rem;
             }
-            .program-description {
-                font-size: 0.9rem;
-                line-height: 1.45;
-            }
-            .program-time {
-                font-size: 1.8rem;
-            }
-            .timer {
-                flex-wrap: nowrap;
-                gap: 8px;
-            }
-            .timer-unit {
-                min-width: auto;
-                flex: 1;
-            }
             .timer-digit {
                 font-size: 26px;
                 padding: 6px 12px;
-            }
-            .labels {
-                gap: 8px;
             }
             .labels span {
                 font-size: 11px;
@@ -641,8 +793,8 @@
                 font-size: 13px;
                 padding: 6px 0;
             }
-            .calendar-cell.highlight {
-                padding: 4px 0;
+            .calendar-cell.highlight::before {
+                inset: -4px;
             }
             .google-form-wrapper iframe {
                 height: 820px;
@@ -657,6 +809,30 @@
                 font-size: 20px;
                 bottom: 20px;
                 right: 16px;
+            }
+        }
+        @media (max-width: 400px) {
+            .first-section .names {
+                font-size: 28px !important;
+            }
+        }
+
+        /* Поддержка системных настроек */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+            .program-item {
+                transition: none !important;
+            }
+            .timer-digit.changed {
+                transform: none;
+            }
+            .calendar-cell {
+                transition: none;
+                opacity: 1;
+                transform: none;
             }
         }
 
@@ -703,6 +879,25 @@
             font-size:24px;
             color:#5a3e1b;
         }
+
+        /* Эффект тач-рипл */
+        .touch-ripple {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+            z-index: 10001;
+        }
+        @keyframes ripple {
+            to {
+                transform: translate(-50%, -50%) scale(10);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -720,6 +915,7 @@
         <div class="blob blob-5"></div>
         <div class="particles"></div>
         <div class="glow"></div>
+        <div class="haze"></div>
         <div class="canvas-texture"></div>
         <div class="vignette"></div>
     </div>
@@ -731,6 +927,7 @@
             <div class="container">
                 <div class="names font-script animate-letter" style="--delay:0.1s; font-size:var(--fs-xxl);" data-animate="Валерий & Мария">Валерий & Мария</div>
             </div>
+            <div class="scroll-hint">↓</div>
         </section>
         <span id="next-section" tabindex="-1" style="position:relative; top:-20px;"></span>
         <section class="section verse-section" id="section-verse">
@@ -876,7 +1073,11 @@
                     Array.from(timerEl.children).forEach((unit, idx) => {
                         const digit = unit.querySelector('.timer-digit');
                         const newVal = units[idx].toString().padStart(2, '0');
-                        if (digit.textContent !== newVal) digit.textContent = newVal;
+                        if (digit.textContent !== newVal) {
+                            digit.classList.add('changed');
+                            digit.textContent = newVal;
+                            setTimeout(() => digit.classList.remove('changed'), 200);
+                        }
                     });
                 }
             }
@@ -902,9 +1103,24 @@
                     html += '<div class="calendar-row">' + cells.slice(i, i+7).join('') + '</div>';
                 }
                 calendarEl.innerHTML = html;
-                document.querySelector('.highlight')?.addEventListener('click', () => {
-                    navigator.clipboard.writeText('20.06.2026');
+
+                const allCells = document.querySelectorAll('.calendar-cell');
+                allCells.forEach((cell, index) => {
+                    setTimeout(() => {
+                        cell.style.opacity = '1';
+                        cell.style.transform = 'scale(1)';
+                    }, index * 20);
                 });
+
+                const highlightCell = document.querySelector('.highlight');
+                if (highlightCell) {
+                    highlightCell.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        navigator.clipboard.writeText('20.06.2026');
+                        highlightCell.classList.add('clicked');
+                        setTimeout(() => highlightCell.classList.remove('clicked'), 400);
+                    });
+                }
             }
 
             const swatches = document.querySelectorAll('.swatch');
@@ -975,6 +1191,52 @@
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) target.scrollIntoView({ behavior: 'smooth' });
                 });
+            });
+
+            const blobs = [document.querySelector('.blob-1'), document.querySelector('.blob-2'), document.querySelector('.blob-3')];
+            if (blobs[0]) {
+                window.addEventListener('scroll', () => {
+                    const y = window.scrollY;
+                    if (blobs[0]) blobs[0].style.transform = `translateY(${y * 0.05}px)`;
+                    if (blobs[1]) blobs[1].style.transform = `translateY(${y * -0.03}px)`;
+                    if (blobs[2]) blobs[2].style.transform = `translateY(${y * 0.02}px)`;
+                });
+            }
+
+            const names = document.querySelector('.first-section .names');
+            if (names) {
+                window.addEventListener('scroll', () => {
+                    const y = window.scrollY;
+                    names.style.transform = `translateY(${y * 0.1}px)`;
+                });
+            }
+
+            const glow = document.querySelector('.glow');
+            if (glow) {
+                window.addEventListener('scroll', () => {
+                    const y = window.scrollY;
+                    glow.style.transform = `translateY(${y * 0.02}px)`;
+                });
+            }
+
+            const bgContainer = document.querySelector('.bg-container');
+            for (let i = 0; i < 20; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'floating-dot';
+                dot.style.left = Math.random() * 100 + '%';
+                dot.style.top = Math.random() * 100 + '%';
+                dot.style.animationDelay = Math.random() * 20 + 's';
+                bgContainer.appendChild(dot);
+            }
+
+            document.addEventListener('touchstart', (e) => {
+                const ripple = document.createElement('div');
+                ripple.className = 'touch-ripple';
+                const touch = e.touches[0];
+                ripple.style.left = touch.clientX + 'px';
+                ripple.style.top = touch.clientY + 'px';
+                document.body.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
             });
         })();
     </script>
