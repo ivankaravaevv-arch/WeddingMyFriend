@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <meta name="color-scheme" content="light">
-    <title>Приглашение на свадьбу Валерия и Марии</title>
-    <meta name="description" content="Приглашение на свадьбу Валерия и Марии — 20 июня 2026">
+    <title>Приглашение на свадьбу Валерии и Марии</title>
+    <meta name="description" content="Приглашение на свадьбу Валерии и Марии — 20 июня 2026">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <style>
-        /* ---------- ДИЗАЙН-СИСТЕМА ---------- */
+        /* ---------- ДИЗАЙН-СИСТЕМА (ОПТИМИЗИРОВАНА ДЛЯ ПЛАВНОСТИ) ---------- */
         :root {
             --color-bg-start: #f5f0e6;
             --color-bg-end: #e8dccc;
@@ -62,7 +61,7 @@
             opacity: 1;
         }
 
-        /* ========== ФОН: слоистая динамическая композиция ========== */
+        /* ========== ФОН: слоистая динамическая композиция (умеренная анимация) ========== */
         .bg-container {
             position: fixed;
             top: 0;
@@ -242,36 +241,6 @@
             z-index: -1;
         }
 
-        /* Градиентное затемнение под текст */
-        .section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.15));
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        h1, h2, h3 {
-            margin-bottom: var(--space-md);
-            line-height: 1.2;
-            position: relative;
-            z-index: 2;
-        }
-        h1 { font-size: var(--fs-xxl); }
-        h2 { font-size: var(--fs-xl); }
-        h3 { font-size: var(--fs-lg); }
-        h1.visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            margin: -1px;
-            padding: 0;
-            overflow: hidden;
-            border: 0;
-            clip: rect(0 0 0 0);
-        }
-
         /* ========== ЕДИНЫЙ СТИЛЬ ТЕКСТА ========== */
         .section p:not(.program-description),
         .section .deadline,
@@ -297,12 +266,8 @@
         }
         .font-script {
             font-family: 'Great Vibes', cursive;
-            transition: text-shadow 0.3s;
             position: relative;
             z-index: 2;
-        }
-        .font-script:hover {
-            text-shadow: 0 0 15px white, 0 0 30px rgba(255,255,255,0.8);
         }
 
         /* ---------- ОБЩИЕ КОМПОНЕНТЫ ---------- */
@@ -339,7 +304,6 @@
         }
         .first-section {
             clip-path: none;
-            animation: heroZoom 8s ease-out forwards;
         }
         .container {
             width: 100%;
@@ -347,7 +311,6 @@
             margin: 0 auto;
             position: relative;
             z-index: 10;
-            /* Убрали все выделения: background, backdrop-filter, border-radius, padding — оставили только центрирование */
         }
 
         /* ----- КАЛЕНДАРЬ ----- */
@@ -383,11 +346,6 @@
             transform: scale(0.8);
             transition: opacity 0.3s, transform 0.3s;
         }
-        .calendar-cell:hover {
-            transform: scale(1.1);
-            background: rgba(255,255,255,0.8);
-        }
-        /* Новый стиль для выделенной даты (мягкое свечение) */
         .calendar-cell.highlight {
             position: relative;
             color: #000;
@@ -416,14 +374,8 @@
             transform: scale(1.3);
             transition: transform 0.2s;
         }
-        @media (hover: none) {
-            .calendar-cell:hover {
-                transform: none;
-                background: none;
-            }
-        }
 
-        /* ----- ПРОГРАММА ----- */
+        /* ----- ПРОГРАММА (оптимизировано, без blur и тяжелых фильтров) ----- */
         .program-timeline {
             max-width: 900px;
             margin: 0 auto;
@@ -438,14 +390,12 @@
             margin-bottom: var(--space-xl);
             opacity: 0;
             transform: translateY(30px) scale(0.98);
-            filter: blur(4px);
-            transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), filter 0.8s ease;
+            transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             position: relative;
         }
         .program-item.visible {
             opacity: 1;
             transform: translateY(0) scale(1);
-            filter: blur(0);
         }
         .program-photo {
             width: 100%;
@@ -453,7 +403,7 @@
             border-radius: var(--radius-3xl);
             overflow: hidden;
             box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2);
-            transition: var(--transition-smooth);
+            transition: transform 0.3s ease;
             background: #f5e5d0;
         }
         .program-photo img {
@@ -461,11 +411,7 @@
             height: auto;
             display: block;
             object-fit: cover;
-            transition: transform 0.5s ease;
-            transform: scale(1.05);
-        }
-        .program-item.visible .program-photo img {
-            transform: scale(1);
+            transition: transform 0.4s ease;
         }
         .program-photo:hover img {
             transform: scale(1.02);
@@ -484,6 +430,17 @@
             font-weight: 500;
             max-width: 450px;
             margin: 0 auto;
+        }
+        .reg-address {
+            font-size: 0.95rem;
+            color: #5a3e2b;
+            margin-top: 8px;
+            font-weight: 400;
+            background: rgba(255,245,235,0.5);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
         }
         @media (min-width: 768px) {
             .program-item {
@@ -508,8 +465,6 @@
                 margin: 0;
             }
         }
-
-        /* Мобильная версия: timeline линия */
         @media (max-width: 768px) {
             .program-timeline::before {
                 content: '';
@@ -548,12 +503,11 @@
                 font-size: 1.8rem;
             }
             .program-description {
-                font-size: 0.9rem;
-                margin: 0;
+                font-size: 0.95rem;
             }
         }
 
-        /* ЦВЕТОВЫЕ ПЛАШКИ */
+        /* ЦВЕТОВЫЕ ПЛАШКИ (удалён коралловый оттенок) */
         .colors {
             display: flex;
             flex-wrap: wrap;
@@ -628,7 +582,7 @@
             font-size: 2rem;
         }
         .timer-digit.changed {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         .labels {
             display: flex;
@@ -705,7 +659,6 @@
             min-height: 80vh;
         }
 
-        /* Подсказка скролла */
         .scroll-hint {
             position: absolute;
             bottom: 30px;
@@ -722,28 +675,7 @@
             50% { transform: translate(-50%,10px); }
         }
 
-        /* ========== ДОПОЛНИТЕЛЬНЫЕ ПРАВКИ ========== */
-        .first-section .names {
-            white-space: normal;
-            line-height: 1.2;
-            word-break: break-word;
-        }
-        .date-heading {
-            font-size: 1.8rem !important;
-        }
-        .dresscode-heading {
-            font-size: 2rem !important;
-        }
-        #section-details h3 {
-            white-space: nowrap;
-        }
-        .verse-section h2 {
-            word-break: keep-all;
-            overflow-wrap: break-word;
-            white-space: normal;
-        }
-
-        /* ========== МОБИЛЬНАЯ ВЕРСИЯ ========== */
+        /* Мобильная версия */
         @media (max-width: 768px) {
             :root {
                 --fs-xxl: 36px;
@@ -769,8 +701,6 @@
             .section p:not(.program-description),
             .section .deadline,
             .section .note,
-            .section .verse-section p,
-            .section .narrow-section p,
             .section a:not(.btn) {
                 font-size: 1rem !important;
                 line-height: 1.5;
@@ -793,15 +723,8 @@
                 font-size: 13px;
                 padding: 6px 0;
             }
-            .calendar-cell.highlight::before {
-                inset: -4px;
-            }
             .google-form-wrapper iframe {
                 height: 820px;
-            }
-            #section-details h3 {
-                white-space: nowrap;
-                font-size: 1.2rem !important;
             }
             .scroll-top {
                 width: 40px;
@@ -810,14 +733,11 @@
                 bottom: 20px;
                 right: 16px;
             }
-        }
-        @media (max-width: 400px) {
-            .first-section .names {
-                font-size: 28px !important;
+            .reg-address {
+                font-size: 0.85rem;
             }
         }
 
-        /* Поддержка системных настроек */
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation: none !important;
@@ -826,30 +746,8 @@
             .program-item {
                 transition: none !important;
             }
-            .timer-digit.changed {
-                transform: none;
-            }
-            .calendar-cell {
-                transition: none;
-                opacity: 1;
-                transform: none;
-            }
         }
 
-        @keyframes heroZoom {
-            from { background-size: 110%; }
-            to { background-size: 100%; }
-        }
-        .animate-letter {
-            display: inline-block;
-            opacity: 0;
-            animation: letterFadeIn 0.2s forwards;
-            animation-delay: var(--delay, 0s);
-        }
-        @keyframes letterFadeIn {
-            from { opacity:0; transform:translateY(10px); }
-            to { opacity:1; transform:translateY(0); }
-        }
         #preloader {
             position: fixed;
             top:0; left:0; width:100%; height:100%;
@@ -879,25 +777,6 @@
             font-size:24px;
             color:#5a3e1b;
         }
-
-        /* Эффект тач-рипл */
-        .touch-ripple {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: ripple 0.6s ease-out;
-            pointer-events: none;
-            z-index: 10001;
-        }
-        @keyframes ripple {
-            to {
-                transform: translate(-50%, -50%) scale(10);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
@@ -922,32 +801,31 @@
 
     <button class="scroll-top" id="scrollTop" aria-label="Наверх">↑</button>
     <main>
-        <h1 class="visually-hidden">Приглашение на свадьбу Валерия и Марии</h1>
+        <h1 class="visually-hidden" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;">Приглашение на свадьбу Валерии и Марии</h1>
         <section class="section first-section" id="section-hero">
             <div class="container">
-                <div class="names font-script animate-letter" style="--delay:0.1s; font-size:var(--fs-xxl);" data-animate="Валерий & Мария">Валерий & Мария</div>
+                <div class="names font-script" style="font-size:var(--fs-xxl);">Валерия & Мария</div>
             </div>
             <div class="scroll-hint">↓</div>
         </section>
-        <span id="next-section" tabindex="-1" style="position:relative; top:-20px;"></span>
         <section class="section verse-section" id="section-verse">
             <div class="container">
-                <h2 class="font-script animate-letter" style="--delay:0s;" data-animate="Дорогие родные и близкие!">Дорогие родные и близкие!</h2>
+                <h2 class="font-script">Дорогие родные и близкие!</h2>
                 <p>Приглашаем Вас разделить с нами радость особенного для нас события и стать частью нашей семейной истории!</p>
-                <p class="animate-letter" style="--delay:0.1s" data-animate="Совсем скоро состоится наша СВАДЬБА!">Совсем скоро состоится наша СВАДЬБА!</p>
+                <p>Совсем скоро состоится наша СВАДЬБА!</p>
                 <p>И мы не представляем этот праздник без Вас, близких и дорогих нам людей.</p>
             </div>
         </section>
         <section class="section" id="section-date">
             <div class="container">
-                <div class="font-script fs-xxl animate-letter" style="--delay:0s;" data-animate="Дата">Дата</div>
-                <h2 class="animate-letter date-heading" style="--delay:0.1s" data-animate="20 ИЮНЯ 2026">20 ИЮНЯ 2026</h2>
+                <div class="font-script fs-xxl">Дата</div>
+                <h2 class="date-heading">20 ИЮНЯ 2026</h2>
                 <div class="calendar" id="calendar"></div>
             </div>
         </section>
         <section class="section narrow-section" id="section-location">
             <div class="container">
-                <div class="font-script fs-xxl animate-letter" style="--delay:0s;" data-animate="Локация">Локация</div>
+                <div class="font-script fs-xxl">Локация</div>
                 <p>Наш праздник пройдёт</p>
                 <p>кафе Арбат, улица Гагарина, 9<br>пгт Краснобродский, Прокопьевский муниципальный округ<br>Кемеровская область — Кузбасс</p>
                 <a href="https://yandex.ru/maps/?text=Кемеровская+область,+Краснобродский,+Гагарина+улица,+9" target="_blank">Смотреть на карте</a>
@@ -958,7 +836,7 @@
         </section>
         <section class="section" id="section-program">
             <div class="container">
-                <div class="font-script fs-xxl animate-letter" style="--delay:0s;" data-animate="Программа">Программа</div>
+                <div class="font-script fs-xxl">Программа</div>
                 <div class="program-timeline" id="programTimeline">
                     <div class="program-item">
                         <div class="program-photo rounded-3xl">
@@ -966,7 +844,10 @@
                         </div>
                         <div class="program-text">
                             <div class="program-time">14:10</div>
-                            <div class="program-description">Торжественная регистрация</div>
+                            <div class="program-description">
+                                Торжественная регистрация
+                                <div class="reg-address">📍 ЗАГС г. Белово, ул. Октябрьская, д. 43</div>
+                            </div>
                         </div>
                     </div>
                     <div class="program-item">
@@ -992,11 +873,11 @@
         </section>
         <section class="section narrow-section" id="section-dresscode">
             <div class="container">
-                <h2 class="animate-letter dresscode-heading" style="--delay:0s" data-animate="DRESS CODE">DRESS CODE</h2>
-                <div class="font-script fs-xxl animate-letter" style="--delay:0.1s;" data-animate="Cocktail">Cocktail</div>
+                <h2 class="dresscode-heading">DRESS CODE</h2>
+                <div class="font-script fs-xxl">Cocktail</div>
                 <p>Нам будет приятно, если Вы поддержите стиль торжества</p>
                 <div class="colors" id="color-swatches">
-                    <div class="swatch" style="background:#B28B7F" data-color="пыльно-розовый"></div>
+                    <!-- Удалён коралловый оттенок (пыльно-розовый) — оставлены только 4 цвета -->
                     <div class="swatch" style="background:#C9AE7D" data-color="тёплый бежево-коричневый"></div>
                     <div class="swatch" style="background:#A4662F" data-color="средний коричневый"></div>
                     <div class="swatch" style="background:#5D3A1A" data-color="тёмно-коричневый (шоколадный)"></div>
@@ -1006,22 +887,22 @@
         </section>
         <section class="section narrow-section" id="section-details">
             <div class="container">
-                <div class="font-script fs-xxl animate-letter" style="--delay:0s;" data-animate="Детали">Детали</div>
-                <h3 class="animate-letter" style="--delay:0.1s" data-animate="ПОДАРКИ И ЦВЕТЫ">ПОДАРКИ И ЦВЕТЫ</h3>
+                <div class="font-script fs-xxl">Детали</div>
+                <h3>ПОДАРКИ И ЦВЕТЫ</h3>
                 <p>Будем рады вкладу в бюджет нашей семьи.</p>
                 <p>Альтернатива букетам — бутылка вина или напитка с запиской о событии, к которому её можно открыть.</p>
             </div>
         </section>
         <section class="section" id="section-timer">
             <div class="container">
-                <div class="font-script fs-xxl animate-letter" style="--delay:0s;" data-animate="До свадьбы">До свадьбы</div>
+                <div class="font-script fs-xxl">До свадьбы</div>
                 <div id="timer" class="timer"></div>
                 <div class="labels"><span>ДНИ</span><span>ЧАСЫ</span><span>МИН</span><span>СЕК</span></div>
             </div>
         </section>
         <section class="section" id="section-form">
             <div class="container">
-                <div class="font-script fs-xxl animate-letter" style="--delay:0s;" data-animate="Анкета гостя">Анкета гостя</div>
+                <div class="font-script fs-xxl">Анкета гостя</div>
                 <p class="deadline" style="margin-bottom: 20px;">Подтвердите, пожалуйста, свое присутствие <strong>до 10.05.2026</strong></p>
                 <div class="google-form-wrapper">
                     <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeoj9cllX90-FewgBsTx1x9k7GNLT9Ai2JmVPX6hg9nZ_1pYg/viewform?embedded=true" width="640" height="1064" frameborder="0" marginheight="0" marginwidth="0">Загрузка…</iframe>
@@ -1036,15 +917,10 @@
                 document.body.classList.add('loaded');
             });
 
-            document.querySelectorAll('.animate-letter').forEach(el => {
-                if (el.children.length && el.querySelector('span.animate-letter')) return;
-                let text = el.dataset.animate || el.innerText;
-                if (!text) return;
-                const letters = text.split('').map((ch, i) => ch === ' ' ? ' ' : `<span class="animate-letter" style="--delay:${i*0.03}s">${ch}</span>`).join('');
-                el.innerHTML = letters;
-                el.classList.remove('animate-letter');
-            });
+            // Убрана анимация побуквенного переписывания (тяжёлая на телефонах)
+            // Текст остаётся статичным, плавность обеспечивается через fadeUp и Intersection Observer
 
+            // Таймер
             const wedding = new Date("2026-06-20T14:10:00+03:00");
             const timerEl = document.getElementById('timer');
             function updateTimer() {
@@ -1084,6 +960,7 @@
             updateTimer();
             setInterval(updateTimer, 1000);
 
+            // Календарь
             const calendarEl = document.getElementById('calendar');
             if (calendarEl) {
                 const daysOfWeek = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
@@ -1094,8 +971,6 @@
                 for (let i = 0; i < offset; i++) cells.push('<span class="calendar-cell"></span>');
                 for (let d = 1; d <= 30; d++) {
                     let cls = 'calendar-cell';
-                    const today = new Date();
-                    if (today.getFullYear() === 2026 && today.getMonth() === 5 && today.getDate() === d) cls += ' today';
                     if (d === 20) cls += ' highlight';
                     cells.push(`<span class="${cls}">${d}</span>`);
                 }
@@ -1103,15 +978,13 @@
                     html += '<div class="calendar-row">' + cells.slice(i, i+7).join('') + '</div>';
                 }
                 calendarEl.innerHTML = html;
-
                 const allCells = document.querySelectorAll('.calendar-cell');
                 allCells.forEach((cell, index) => {
                     setTimeout(() => {
                         cell.style.opacity = '1';
                         cell.style.transform = 'scale(1)';
-                    }, index * 20);
+                    }, index * 15);
                 });
-
                 const highlightCell = document.querySelector('.highlight');
                 if (highlightCell) {
                     highlightCell.addEventListener('click', (e) => {
@@ -1123,6 +996,7 @@
                 }
             }
 
+            // Подсказки цветов (удалён коралловый)
             const swatches = document.querySelectorAll('.swatch');
             let tooltip = null;
             function showColorTooltip(colorName, x, y) {
@@ -1150,13 +1024,14 @@
                 });
             });
 
+            // Анимация программы
             const programItems = document.querySelectorAll('.program-item');
             const programSection = document.getElementById('section-program');
             const programObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         programItems.forEach((item, idx) => {
-                            setTimeout(() => item.classList.add('visible'), idx * 200);
+                            setTimeout(() => item.classList.add('visible'), idx * 150);
                         });
                         programObserver.unobserve(entry.target);
                     }
@@ -1164,9 +1039,10 @@
             }, { threshold: 0.2 });
             if (programSection) programObserver.observe(programSection);
             if (programSection && programSection.getBoundingClientRect().top < window.innerHeight) {
-                programItems.forEach((item, idx) => setTimeout(() => item.classList.add('visible'), idx * 200));
+                programItems.forEach((item, idx) => setTimeout(() => item.classList.add('visible'), idx * 150));
             }
 
+            // Появление секций
             const sections = document.querySelectorAll('.section');
             const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -1178,6 +1054,7 @@
             }, { threshold: 0.1 });
             sections.forEach(section => sectionObserver.observe(section));
 
+            // Кнопка наверх
             const scrollBtn = document.getElementById('scrollTop');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 300) scrollBtn.classList.add('visible');
@@ -1185,6 +1062,7 @@
             });
             scrollBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+            // Плавные якоря
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1193,34 +1071,20 @@
                 });
             });
 
+            // Лёгкий параллакс для фона (без сильной нагрузки)
             const blobs = [document.querySelector('.blob-1'), document.querySelector('.blob-2'), document.querySelector('.blob-3')];
             if (blobs[0]) {
                 window.addEventListener('scroll', () => {
                     const y = window.scrollY;
-                    if (blobs[0]) blobs[0].style.transform = `translateY(${y * 0.05}px)`;
-                    if (blobs[1]) blobs[1].style.transform = `translateY(${y * -0.03}px)`;
-                    if (blobs[2]) blobs[2].style.transform = `translateY(${y * 0.02}px)`;
+                    if (blobs[0]) blobs[0].style.transform = `translateY(${y * 0.04}px)`;
+                    if (blobs[1]) blobs[1].style.transform = `translateY(${y * -0.02}px)`;
+                    if (blobs[2]) blobs[2].style.transform = `translateY(${y * 0.01}px)`;
                 });
             }
 
-            const names = document.querySelector('.first-section .names');
-            if (names) {
-                window.addEventListener('scroll', () => {
-                    const y = window.scrollY;
-                    names.style.transform = `translateY(${y * 0.1}px)`;
-                });
-            }
-
-            const glow = document.querySelector('.glow');
-            if (glow) {
-                window.addEventListener('scroll', () => {
-                    const y = window.scrollY;
-                    glow.style.transform = `translateY(${y * 0.02}px)`;
-                });
-            }
-
+            // Плавающие точки
             const bgContainer = document.querySelector('.bg-container');
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 15; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'floating-dot';
                 dot.style.left = Math.random() * 100 + '%';
@@ -1228,16 +1092,6 @@
                 dot.style.animationDelay = Math.random() * 20 + 's';
                 bgContainer.appendChild(dot);
             }
-
-            document.addEventListener('touchstart', (e) => {
-                const ripple = document.createElement('div');
-                ripple.className = 'touch-ripple';
-                const touch = e.touches[0];
-                ripple.style.left = touch.clientX + 'px';
-                ripple.style.top = touch.clientY + 'px';
-                document.body.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            });
         })();
     </script>
 </body>
