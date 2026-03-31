@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <meta name="color-scheme" content="light">
-    <title>Приглашение на свадьбу Валерии и Марии</title>
-    <meta name="description" content="Приглашение на свадьбу Валерии и Марии — 20 июня 2026">
+    <title>Приглашение на свадьбу Валерия и Марии</title>
+    <meta name="description" content="Приглашение на свадьбу Валерия и Марии — 20 июня 2026">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
@@ -507,7 +507,7 @@
             }
         }
 
-        /* ЦВЕТОВЫЕ ПЛАШКИ (удалён коралловый оттенок) */
+        /* ЦВЕТОВЫЕ ПЛАШКИ (пшеничный + обновлённая палитра) */
         .colors {
             display: flex;
             flex-wrap: wrap;
@@ -641,6 +641,42 @@
             opacity: 1;
             visibility: visible;
         }
+
+        /* Кнопка музыки */
+        .music-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 48px;
+            height: 48px;
+            background: rgba(139,90,43,0.9);
+            backdrop-filter: blur(4px);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background 0.2s;
+            color: white;
+            font-size: 24px;
+        }
+        .music-toggle:hover {
+            transform: scale(1.05);
+            background: var(--color-accent);
+        }
+        @media (max-width: 768px) {
+            .music-toggle {
+                width: 42px;
+                height: 42px;
+                font-size: 20px;
+                bottom: 16px;
+                left: 16px;
+            }
+        }
+
         .map-section {
             padding: 0;
             min-height: auto;
@@ -800,11 +836,15 @@
     </div>
 
     <button class="scroll-top" id="scrollTop" aria-label="Наверх">↑</button>
+    
+    <!-- Кнопка управления музыкой -->
+    <button class="music-toggle" id="musicToggle" aria-label="Включить/выключить музыку">🎵</button>
+
     <main>
-        <h1 class="visually-hidden" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;">Приглашение на свадьбу Валерии и Марии</h1>
+        <h1 class="visually-hidden" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;">Приглашение на свадьбу Валерия и Марии</h1>
         <section class="section first-section" id="section-hero">
             <div class="container">
-                <div class="names font-script" style="font-size:var(--fs-xxl);">Валерия & Мария</div>
+                <div class="names font-script" style="font-size:var(--fs-xxl);">Валерий & Мария</div>
             </div>
             <div class="scroll-hint">↓</div>
         </section>
@@ -877,7 +917,7 @@
                 <div class="font-script fs-xxl">Cocktail</div>
                 <p>Нам будет приятно, если Вы поддержите стиль торжества</p>
                 <div class="colors" id="color-swatches">
-                    <!-- Удалён коралловый оттенок (пыльно-розовый) — оставлены только 4 цвета -->
+                    <div class="swatch" style="background:#F5DEB3" data-color="пшеничный"></div>
                     <div class="swatch" style="background:#C9AE7D" data-color="тёплый бежево-коричневый"></div>
                     <div class="swatch" style="background:#A4662F" data-color="средний коричневый"></div>
                     <div class="swatch" style="background:#5D3A1A" data-color="тёмно-коричневый (шоколадный)"></div>
@@ -910,6 +950,13 @@
             </div>
         </section>
     </main>
+
+    <!-- Аудио элемент для музыки -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Alexander_Nakarada/Reaching_The_Sky/Alexander_Nakarada_-_01_-_Reaching_The_Sky_Long_Version.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+
     <script>
         (function() {
             window.addEventListener('load', () => {
@@ -917,8 +964,73 @@
                 document.body.classList.add('loaded');
             });
 
-            // Убрана анимация побуквенного переписывания (тяжёлая на телефонах)
-            // Текст остаётся статичным, плавность обеспечивается через fadeUp и Intersection Observer
+            // Управление музыкой
+            const audio = document.getElementById('bgMusic');
+            const musicBtn = document.getElementById('musicToggle');
+            let isPlaying = false;
+            let userInteracted = false; // флаг для первого взаимодействия
+
+            if (audio && musicBtn) {
+                // Пытаемся запустить музыку с muted, чтобы autoplay сработал
+                audio.muted = true;
+                audio.play().then(() => {
+                    isPlaying = true;
+                    // Музыка играет приглушённо. При первом клике на кнопку убираем mute и оставляем игру
+                    musicBtn.innerHTML = '🔊';
+                }).catch(err => {
+                    console.log('Autoplay blocked, waiting for user interaction');
+                    isPlaying = false;
+                    musicBtn.innerHTML = '🔇';
+                });
+
+                // Функция обновления иконки
+                function updateIcon() {
+                    if (isPlaying && !audio.muted) musicBtn.innerHTML = '🔊';
+                    else if (isPlaying && audio.muted) musicBtn.innerHTML = '🔇';
+                    else musicBtn.innerHTML = '🔇';
+                }
+
+                musicBtn.addEventListener('click', () => {
+                    if (!userInteracted) {
+                        userInteracted = true;
+                        // Первое нажатие: убираем mute и запускаем, если ещё не играет
+                        audio.muted = false;
+                        if (!isPlaying) {
+                            audio.play().then(() => {
+                                isPlaying = true;
+                                updateIcon();
+                            }).catch(e => console.log('Play failed:', e));
+                        } else {
+                            updateIcon();
+                        }
+                    } else {
+                        // Обычное переключение play/pause
+                        if (isPlaying) {
+                            audio.pause();
+                            isPlaying = false;
+                        } else {
+                            audio.play().then(() => {
+                                isPlaying = true;
+                            }).catch(e => console.log('Play failed:', e));
+                        }
+                    }
+                    updateIcon();
+                });
+
+                // Синхронизация иконки при изменении состояния аудио (например, если кончился трек)
+                audio.addEventListener('play', () => {
+                    isPlaying = true;
+                    updateIcon();
+                });
+                audio.addEventListener('pause', () => {
+                    isPlaying = false;
+                    updateIcon();
+                });
+                audio.addEventListener('volumechange', () => {
+                    if (audio.muted) updateIcon();
+                    else updateIcon();
+                });
+            }
 
             // Таймер
             const wedding = new Date("2026-06-20T14:10:00+03:00");
@@ -996,7 +1108,7 @@
                 }
             }
 
-            // Подсказки цветов (удалён коралловый)
+            // Подсказки цветов
             const swatches = document.querySelectorAll('.swatch');
             let tooltip = null;
             function showColorTooltip(colorName, x, y) {
@@ -1071,7 +1183,7 @@
                 });
             });
 
-            // Лёгкий параллакс для фона (без сильной нагрузки)
+            // Лёгкий параллакс для фона
             const blobs = [document.querySelector('.blob-1'), document.querySelector('.blob-2'), document.querySelector('.blob-3')];
             if (blobs[0]) {
                 window.addEventListener('scroll', () => {
