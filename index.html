@@ -10,15 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        /* ---------- ДИЗАЙН-СИСТЕМА (оригинальные цвета текста, без подложек) ---------- */
+        /* ---------- ДИЗАЙН-СИСТЕМА ---------- */
         :root {
-            --color-bg-start: #f5f0e6;
-            --color-bg-end: #e8dccc;
             --color-text: #000000;
             --color-accent: #8b5a2b;
-            --color-white: #ffffff;
-            --color-light: #f0f0f0;
-            --color-border: #ccc;
             --space-xs: 5px;
             --space-sm: 10px;
             --space-md: 20px;
@@ -54,15 +49,14 @@
             transition: opacity 0.5s;
             position: relative;
             overflow-x: hidden;
-            word-break: keep-all;
             background: #f3e9da;
         }
         body.loaded {
             opacity: 1;
         }
 
-        /* ========== ВИДЕО-ФОН ========== */
-        .video-background {
+        /* ========== ФОН: GIF на весь экран, яркость 1.25 ========== */
+        .bg-gif {
             position: fixed;
             top: 0;
             left: 0;
@@ -71,9 +65,17 @@
             object-fit: cover;
             z-index: -2;
             pointer-events: none;
+            filter: brightness(1.25);
         }
 
-        /* ========== ЕДИНЫЙ СТИЛЬ ТЕКСТА (оригинальные цвета) ========== */
+        /* ========== ТЕКСТ (без подложек) ========== */
+        .container {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
         .section p:not(.program-description),
         .section .deadline,
         .section .note,
@@ -106,7 +108,7 @@
             color: #000000;
         }
 
-        /* ---------- ОБЩИЕ КОМПОНЕНТЫ (без подложек) ---------- */
+        /* ---------- ОБЩИЕ КОМПОНЕНТЫ ---------- */
         .section {
             min-height: 100vh;
             display: flex;
@@ -140,14 +142,6 @@
         }
         .first-section {
             clip-path: none;
-        }
-        .container {
-            width: 100%;
-            max-width: 680px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 10;
-            /* подложка удалена */
         }
 
         /* ----- КАЛЕНДАРЬ ----- */
@@ -436,7 +430,7 @@
             text-align: center;
         }
 
-        /* Форма (Google Forms) – для формы оставим лёгкую подложку, чтобы текст читался */
+        /* Форма (Google Forms) – лёгкая подложка для читаемости */
         .google-form-wrapper {
             position: relative;
             overflow: auto;
@@ -482,7 +476,6 @@
             visibility: visible;
         }
 
-        /* Кнопка музыки */
         .music-toggle {
             position: fixed;
             bottom: 20px;
@@ -661,8 +654,8 @@
         <div class="loader-text">Загрузка приглашения...</div>
     </div>
 
-    <!-- Видео-фон -->
-    <video id="bgVideo" class="video-background" muted autoplay playsinline></video>
+    <!-- Фон: GIF с яркостью 1.25 -->
+    <img class="bg-gif" src="https://raw.githubusercontent.com/ivankaravaevv-arch/WeddingMyFriend/c66a48f329d617a474e6c9b8436dc6f1f6dbc575/2e9f12a0-555a-4ecf-9cc7-b75f00a91c76.gif" alt="фон" loading="eager">
 
     <button class="scroll-top" id="scrollTop" aria-label="Наверх">↑</button>
     <button class="music-toggle" id="musicToggle" aria-label="Включить/выключить музыку">🎵</button>
@@ -788,118 +781,17 @@
             window.addEventListener('load', () => {
                 document.getElementById('preloader')?.classList.add('hidden');
                 document.body.classList.add('loaded');
-                initVideoBackground();
-                initMusicAutoPlay();
+                initMusicWithFirstTouch();
             });
 
-            // --- Устойчивый видео-фон с циклом вперёд/назад ---
-            function initVideoBackground() {
-                const video = document.getElementById('bgVideo');
-                if (!video) return;
-                const videoUrl = 'https://raw.githubusercontent.com/ivankaravaevv-arch/WeddingMyFriend/54afbfb8f6e2de1b97c43723e4241d80f2a50044/0217_gyv2f7.mov--effiroom.ru.mp4';
-                video.src = videoUrl;
-                video.load();
-
-                let direction = 1;      // 1 = вперёд, -1 = назад
-                const playbackSpeed = 0.8;
-                let isPlayingFlag = false;
-                let restartTimer = null;
-
-                function setPlayback() {
-                    video.playbackRate = playbackSpeed * direction;
-                }
-
-                function ensurePlaying() {
-                    if (video.paused || video.ended || video.readyState < 2) {
-                        video.play().catch(e => console.warn('Video play failed:', e));
-                    }
-                }
-
-                function onTimeUpdate() {
-                    if (direction === 1 && video.currentTime >= video.duration - 0.05) {
-                        direction = -1;
-                        setPlayback();
-                        ensurePlaying();
-                    } else if (direction === -1 && video.currentTime <= 0.05) {
-                        direction = 1;
-                        setPlayback();
-                        ensurePlaying();
-                    }
-                }
-
-                video.addEventListener('canplaythrough', () => {
-                    setPlayback();
-                    video.play().then(() => {
-                        isPlayingFlag = true;
-                    }).catch(e => console.warn('Video autoplay blocked:', e));
-                });
-
-                video.addEventListener('timeupdate', onTimeUpdate);
-                video.addEventListener('ended', () => {
-                    // если вдруг дошло до конца в прямом направлении, но обработчик timeupdate не сработал
-                    if (direction === 1) {
-                        direction = -1;
-                        setPlayback();
-                        video.play().catch(e => {});
-                    }
-                });
-
-                video.addEventListener('pause', () => {
-                    // Если видео на паузе и не должно быть, перезапускаем
-                    if (isPlayingFlag || (video.currentTime > 0 && video.currentTime < video.duration - 0.1)) {
-                        video.play().catch(e => {});
-                    }
-                });
-
-                video.addEventListener('error', (e) => {
-                    console.error('Video error:', e);
-                    // Попробуем перезагрузить через 2 секунды
-                    setTimeout(() => {
-                        video.load();
-                        video.play().catch(e => {});
-                    }, 2000);
-                });
-
-                // Периодическая проверка, чтобы видео не останавливалось
-                setInterval(() => {
-                    if (video.paused && video.currentTime > 0 && video.currentTime < video.duration - 0.1) {
-                        video.play().catch(e => {});
-                    }
-                }, 2000);
-            }
-
-            // --- Музыка: принудительное автовоспроизведение ---
-            function initMusicAutoPlay() {
+            // --- Музыка: запуск после первого касания ---
+            function initMusicWithFirstTouch() {
                 const audio = document.getElementById('bgMusic');
                 const musicBtn = document.getElementById('musicToggle');
                 if (!audio || !musicBtn) return;
 
                 let isPlaying = false;
-
-                // Пытаемся запустить с muted
-                audio.muted = true;
-                audio.play().then(() => {
-                    isPlaying = true;
-                    setTimeout(() => {
-                        audio.muted = false;
-                        updateIcon();
-                    }, 500);
-                }).catch(err => {
-                    console.warn('Music autoplay blocked, waiting for interaction');
-                    isPlaying = false;
-                    updateIcon();
-                    const startMusic = () => {
-                        audio.muted = false;
-                        audio.play().then(() => {
-                            isPlaying = true;
-                            updateIcon();
-                        }).catch(e => console.log('Play error:', e));
-                        document.removeEventListener('touchstart', startMusic);
-                        document.removeEventListener('click', startMusic);
-                    };
-                    document.addEventListener('touchstart', startMusic);
-                    document.addEventListener('click', startMusic);
-                });
+                let firstInteractionDone = false;
 
                 function updateIcon() {
                     if (!isPlaying) musicBtn.innerHTML = '🔇';
@@ -907,14 +799,35 @@
                     else musicBtn.innerHTML = '🔊';
                 }
 
-                musicBtn.addEventListener('click', () => {
+                function startMusic() {
+                    if (isPlaying) return;
+                    audio.muted = false;
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        updateIcon();
+                    }).catch(e => console.warn('Play failed:', e));
+                }
+
+                function onFirstInteraction() {
+                    if (firstInteractionDone) return;
+                    firstInteractionDone = true;
+                    startMusic();
+                    document.removeEventListener('touchstart', onFirstInteraction);
+                    document.removeEventListener('click', onFirstInteraction);
+                }
+
+                document.addEventListener('touchstart', onFirstInteraction);
+                document.addEventListener('click', onFirstInteraction);
+
+                musicBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     if (isPlaying) {
                         audio.pause();
                         isPlaying = false;
                     } else {
+                        audio.muted = false;
                         audio.play().then(() => {
                             isPlaying = true;
-                            updateIcon();
                         }).catch(e => console.log('Play error:', e));
                     }
                     updateIcon();
@@ -923,9 +836,11 @@
                 audio.addEventListener('play', () => { isPlaying = true; updateIcon(); });
                 audio.addEventListener('pause', () => { isPlaying = false; updateIcon(); });
                 audio.addEventListener('volumechange', updateIcon);
+                audio.load();
+                audio.muted = true;
             }
 
-            // --- Таймер (без изменений) ---
+            // --- Таймер ---
             const wedding = new Date("2026-06-20T14:10:00+03:00");
             const timerEl = document.getElementById('timer');
             function updateTimer() {
@@ -964,7 +879,7 @@
                 setInterval(updateTimer, 1000);
             }
 
-            // --- Календарь (без изменений) ---
+            // --- Календарь ---
             const calendarEl = document.getElementById('calendar');
             if (calendarEl) {
                 const daysOfWeek = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
@@ -986,7 +901,7 @@
                 if (highlightCell) highlightCell.addEventListener('click', (e) => { e.stopPropagation(); navigator.clipboard.writeText('20.06.2026'); highlightCell.classList.add('clicked'); setTimeout(() => highlightCell.classList.remove('clicked'), 400); });
             }
 
-            // --- Цветовые подсказки (без изменений) ---
+            // --- Цветовые подсказки ---
             const swatches = document.querySelectorAll('.swatch');
             let tooltip = null;
             function showColorTooltip(colorName, x, y) {
@@ -1005,7 +920,7 @@
                 });
             });
 
-            // --- Анимация программы и секций (без изменений) ---
+            // --- Программа ---
             const programItems = document.querySelectorAll('.program-item');
             const programSection = document.getElementById('section-program');
             const programObserver = new IntersectionObserver((entries) => {
@@ -1019,16 +934,19 @@
             if (programSection) programObserver.observe(programSection);
             if (programSection && programSection.getBoundingClientRect().top < window.innerHeight) programItems.forEach((item, idx) => setTimeout(() => item.classList.add('visible'), idx * 150));
 
+            // --- Секции ---
             const sections = document.querySelectorAll('.section');
             const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); sectionObserver.unobserve(entry.target); } });
             }, { threshold: 0.1 });
             sections.forEach(section => sectionObserver.observe(section));
 
+            // --- Кнопка наверх ---
             const scrollBtn = document.getElementById('scrollTop');
             window.addEventListener('scroll', () => { if (window.scrollY > 300) scrollBtn.classList.add('visible'); else scrollBtn.classList.remove('visible'); });
             scrollBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+            // --- Якоря ---
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth' }); });
             });
