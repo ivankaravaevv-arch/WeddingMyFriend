@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        /* ---------- ДИЗАЙН-СИСТЕМА (ОПТИМИЗИРОВАНА ДЛЯ ПЛАВНОСТИ) ---------- */
+        /* ---------- ДИЗАЙН-СИСТЕМА (оригинальные цвета текста, без подложек) ---------- */
         :root {
             --color-bg-start: #f5f0e6;
             --color-bg-end: #e8dccc;
@@ -61,187 +61,19 @@
             opacity: 1;
         }
 
-        /* ========== ФОН: слоистая динамическая композиция (умеренная анимация) ========== */
-        .bg-container {
+        /* ========== ВИДЕО-ФОН ========== */
+        .video-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -3;
-            overflow: hidden;
-        }
-        .gradient-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 40%, #faf0e0, #f5e5d0, #efddc6, #e8d2b5);
-            background-size: 400% 400%;
-            animation: gradientFlow 24s ease infinite;
-        }
-        @keyframes gradientFlow {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-        .blob {
-            position: absolute;
-            filter: blur(70px);
-            opacity: 0.35;
-            pointer-events: none;
-            will-change: transform;
-            border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
-            animation: morph 20s infinite ease-in-out;
-        }
-        @keyframes morph {
-            0% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
-            50% { border-radius: 60% 40% 40% 60% / 40% 60% 40% 60%; }
-            100% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
-        }
-        .blob-1 {
-            width: 70vw;
-            height: 70vw;
-            background: radial-gradient(circle, #ffdbb5, #ffc28a);
-            top: -20vh;
-            left: -20vw;
-            animation-duration: 60s;
-            animation-name: floatBlob, morph;
-            animation-iteration-count: infinite;
-            animation-timing-function: ease-in-out;
-        }
-        .blob-2 {
-            width: 80vh;
-            height: 80vh;
-            background: radial-gradient(circle, #f8d5a8, #eeb47a);
-            bottom: -20vh;
-            right: -20vw;
-            animation-duration: 80s;
-            animation-name: floatBlob2, morph;
-        }
-        .blob-3 {
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, #ffe4bc, #f7cf9c);
-            top: 30vh;
-            right: -15vw;
-            animation-duration: 100s;
-            animation-name: floatBlob3, morph;
-        }
-        .blob-4 {
-            width: 50vh;
-            height: 50vh;
-            background: radial-gradient(circle, #ffddb0, #f5c28a);
-            bottom: 10vh;
-            left: -10vw;
-            animation-duration: 120s;
-            animation-name: floatBlob4, morph;
-        }
-        .blob-5 {
-            width: 45vw;
-            height: 45vw;
-            background: radial-gradient(circle, #ffd4a5, #f7bc7a);
-            top: 60vh;
-            left: 20vw;
-            animation-duration: 90s;
-            animation-name: floatBlob5, morph;
-        }
-        @keyframes floatBlob {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(10%, 8%) scale(1.2); }
-        }
-        @keyframes floatBlob2 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-8%, -6%) scale(1.25); }
-        }
-        @keyframes floatBlob3 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(6%, -10%) scale(1.15); }
-        }
-        @keyframes floatBlob4 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-5%, 12%) scale(1.2); }
-        }
-        @keyframes floatBlob5 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(12%, -4%) scale(1.1); }
-        }
-
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle at 20% 40%, rgba(255,240,210,0.2) 1px, transparent 1px),
-                              radial-gradient(circle at 80% 70%, rgba(255,220,160,0.25) 1px, transparent 1px);
-            background-size: 80px 80px, 100px 100px;
-            background-repeat: repeat;
-            animation: particleDrift 120s linear infinite;
-            pointer-events: none;
-            opacity: 0.3;
-        }
-        @keyframes particleDrift {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 200px 200px, -300px 150px; }
-        }
-
-        .glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,240,210,0.3), transparent 60%),
-                        radial-gradient(circle at 70% 70%, rgba(255,220,180,0.2), transparent 60%);
-            animation: glowMove 20s infinite alternate ease-in-out;
-            pointer-events: none;
-            will-change: transform;
-        }
-        @keyframes glowMove {
-            0% { background-position: 30% 30%, 70% 70%; }
-            100% { background-position: 60% 40%, 40% 80%; }
-        }
-
-        .haze {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(40px);
-            opacity: 0.15;
+            object-fit: cover;
+            z-index: -2;
             pointer-events: none;
         }
 
-        .floating-dot {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255,255,255,0.4);
-            border-radius: 50%;
-            animation: floatDot 20s infinite ease-in-out;
-            pointer-events: none;
-        }
-        @keyframes floatDot {
-            0% { transform: translateY(0); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(-40px); opacity: 0; }
-        }
-
-        .canvas-texture {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wNCIgLz48L3N2Zz4=');
-            background-repeat: repeat;
-            pointer-events: none;
-            opacity: 0.2;
-            mix-blend-mode: overlay;
-        }
-        .vignette {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            box-shadow: inset 0 0 150px rgba(0,0,0,0.1);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        /* ========== ЕДИНЫЙ СТИЛЬ ТЕКСТА ========== */
+        /* ========== ЕДИНЫЙ СТИЛЬ ТЕКСТА (оригинальные цвета) ========== */
         .section p:not(.program-description),
         .section .deadline,
         .section .note,
@@ -268,9 +100,13 @@
             font-family: 'Great Vibes', cursive;
             position: relative;
             z-index: 2;
+            color: #000000;
+        }
+        h1, h2, h3, .date-heading, .dresscode-heading {
+            color: #000000;
         }
 
-        /* ---------- ОБЩИЕ КОМПОНЕНТЫ ---------- */
+        /* ---------- ОБЩИЕ КОМПОНЕНТЫ (без подложек) ---------- */
         .section {
             min-height: 100vh;
             display: flex;
@@ -311,6 +147,7 @@
             margin: 0 auto;
             position: relative;
             z-index: 10;
+            /* подложка удалена */
         }
 
         /* ----- КАЛЕНДАРЬ ----- */
@@ -345,6 +182,7 @@
             opacity: 0;
             transform: scale(0.8);
             transition: opacity 0.3s, transform 0.3s;
+            color: #000000;
         }
         .calendar-cell.highlight {
             position: relative;
@@ -375,7 +213,7 @@
             transition: transform 0.2s;
         }
 
-        /* ----- ПРОГРАММА (оптимизировано, без blur и тяжелых фильтров) ----- */
+        /* ----- ПРОГРАММА ----- */
         .program-timeline {
             max-width: 900px;
             margin: 0 auto;
@@ -436,7 +274,7 @@
             color: #5a3e2b;
             margin-top: 8px;
             font-weight: 400;
-            background: rgba(255,245,235,0.5);
+            background: rgba(255,245,235,0.8);
             display: inline-block;
             padding: 4px 12px;
             border-radius: 40px;
@@ -507,7 +345,7 @@
             }
         }
 
-        /* ЦВЕТОВЫЕ ПЛАШКИ (пшеничный + обновлённая палитра) */
+        /* ЦВЕТОВЫЕ ПЛАШКИ */
         .colors {
             display: flex;
             flex-wrap: wrap;
@@ -580,6 +418,7 @@
             font-family: "Courier New", monospace;
             letter-spacing: 2px;
             font-size: 2rem;
+            color: #000;
         }
         .timer-digit.changed {
             transform: scale(1.05);
@@ -590,13 +429,14 @@
             gap: var(--space-md);
             font-size: var(--fs-sm);
             margin-top: var(--space-xs);
+            color: #000;
         }
         .labels span {
             width: 70px;
             text-align: center;
         }
 
-        /* Форма (Google Forms) */
+        /* Форма (Google Forms) – для формы оставим лёгкую подложку, чтобы текст читался */
         .google-form-wrapper {
             position: relative;
             overflow: auto;
@@ -605,7 +445,7 @@
             margin: 0 auto;
             border-radius: 24px;
             box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
-            background: transparent;
+            background: rgba(255,255,255,0.9);
             -webkit-overflow-scrolling: touch;
         }
         .google-form-wrapper iframe {
@@ -705,13 +545,13 @@
             animation: bounce 2s infinite;
             z-index: 20;
             pointer-events: none;
+            color: #000;
         }
         @keyframes bounce {
             0%,100% { transform: translate(-50%,0); }
             50% { transform: translate(-50%,10px); }
         }
 
-        /* Мобильная версия */
         @media (max-width: 768px) {
             :root {
                 --fs-xxl: 36px;
@@ -787,7 +627,7 @@
         #preloader {
             position: fixed;
             top:0; left:0; width:100%; height:100%;
-            background: var(--color-bg-start);
+            background: #f5f0e6;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -821,23 +661,10 @@
         <div class="loader-text">Загрузка приглашения...</div>
     </div>
 
-    <div class="bg-container">
-        <div class="gradient-bg"></div>
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-        <div class="blob blob-4"></div>
-        <div class="blob blob-5"></div>
-        <div class="particles"></div>
-        <div class="glow"></div>
-        <div class="haze"></div>
-        <div class="canvas-texture"></div>
-        <div class="vignette"></div>
-    </div>
+    <!-- Видео-фон -->
+    <video id="bgVideo" class="video-background" muted autoplay playsinline></video>
 
     <button class="scroll-top" id="scrollTop" aria-label="Наверх">↑</button>
-    
-    <!-- Кнопка управления музыкой -->
     <button class="music-toggle" id="musicToggle" aria-label="Включить/выключить музыку">🎵</button>
 
     <main>
@@ -951,10 +778,9 @@
         </section>
     </main>
 
-    <!-- Аудио элемент для музыки -->
     <audio id="bgMusic" loop preload="auto">
+        <source src="https://raw.githubusercontent.com/ivankaravaevv-arch/WeddingMyFriend/9126d4d7436a3c4f030163b1aedb08c735d33960/ReachingtheSkyLongVersion-320bit(chosic.com).mp3" type="audio/mpeg">
         <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Alexander_Nakarada/Reaching_The_Sky/Alexander_Nakarada_-_01_-_Reaching_The_Sky_Long_Version.mp3" type="audio/mpeg">
-        Ваш браузер не поддерживает аудио.
     </audio>
 
     <script>
@@ -962,84 +788,151 @@
             window.addEventListener('load', () => {
                 document.getElementById('preloader')?.classList.add('hidden');
                 document.body.classList.add('loaded');
+                initVideoBackground();
+                initMusicAutoPlay();
             });
 
-            // Управление музыкой
-            const audio = document.getElementById('bgMusic');
-            const musicBtn = document.getElementById('musicToggle');
-            let isPlaying = false;
-            let userInteracted = false; // флаг для первого взаимодействия
+            // --- Устойчивый видео-фон с циклом вперёд/назад ---
+            function initVideoBackground() {
+                const video = document.getElementById('bgVideo');
+                if (!video) return;
+                const videoUrl = 'https://raw.githubusercontent.com/ivankaravaevv-arch/WeddingMyFriend/54afbfb8f6e2de1b97c43723e4241d80f2a50044/0217_gyv2f7.mov--effiroom.ru.mp4';
+                video.src = videoUrl;
+                video.load();
 
-            if (audio && musicBtn) {
-                // Пытаемся запустить музыку с muted, чтобы autoplay сработал
+                let direction = 1;      // 1 = вперёд, -1 = назад
+                const playbackSpeed = 0.8;
+                let isPlayingFlag = false;
+                let restartTimer = null;
+
+                function setPlayback() {
+                    video.playbackRate = playbackSpeed * direction;
+                }
+
+                function ensurePlaying() {
+                    if (video.paused || video.ended || video.readyState < 2) {
+                        video.play().catch(e => console.warn('Video play failed:', e));
+                    }
+                }
+
+                function onTimeUpdate() {
+                    if (direction === 1 && video.currentTime >= video.duration - 0.05) {
+                        direction = -1;
+                        setPlayback();
+                        ensurePlaying();
+                    } else if (direction === -1 && video.currentTime <= 0.05) {
+                        direction = 1;
+                        setPlayback();
+                        ensurePlaying();
+                    }
+                }
+
+                video.addEventListener('canplaythrough', () => {
+                    setPlayback();
+                    video.play().then(() => {
+                        isPlayingFlag = true;
+                    }).catch(e => console.warn('Video autoplay blocked:', e));
+                });
+
+                video.addEventListener('timeupdate', onTimeUpdate);
+                video.addEventListener('ended', () => {
+                    // если вдруг дошло до конца в прямом направлении, но обработчик timeupdate не сработал
+                    if (direction === 1) {
+                        direction = -1;
+                        setPlayback();
+                        video.play().catch(e => {});
+                    }
+                });
+
+                video.addEventListener('pause', () => {
+                    // Если видео на паузе и не должно быть, перезапускаем
+                    if (isPlayingFlag || (video.currentTime > 0 && video.currentTime < video.duration - 0.1)) {
+                        video.play().catch(e => {});
+                    }
+                });
+
+                video.addEventListener('error', (e) => {
+                    console.error('Video error:', e);
+                    // Попробуем перезагрузить через 2 секунды
+                    setTimeout(() => {
+                        video.load();
+                        video.play().catch(e => {});
+                    }, 2000);
+                });
+
+                // Периодическая проверка, чтобы видео не останавливалось
+                setInterval(() => {
+                    if (video.paused && video.currentTime > 0 && video.currentTime < video.duration - 0.1) {
+                        video.play().catch(e => {});
+                    }
+                }, 2000);
+            }
+
+            // --- Музыка: принудительное автовоспроизведение ---
+            function initMusicAutoPlay() {
+                const audio = document.getElementById('bgMusic');
+                const musicBtn = document.getElementById('musicToggle');
+                if (!audio || !musicBtn) return;
+
+                let isPlaying = false;
+
+                // Пытаемся запустить с muted
                 audio.muted = true;
                 audio.play().then(() => {
                     isPlaying = true;
-                    // Музыка играет приглушённо. При первом клике на кнопку убираем mute и оставляем игру
-                    musicBtn.innerHTML = '🔊';
+                    setTimeout(() => {
+                        audio.muted = false;
+                        updateIcon();
+                    }, 500);
                 }).catch(err => {
-                    console.log('Autoplay blocked, waiting for user interaction');
+                    console.warn('Music autoplay blocked, waiting for interaction');
                     isPlaying = false;
-                    musicBtn.innerHTML = '🔇';
+                    updateIcon();
+                    const startMusic = () => {
+                        audio.muted = false;
+                        audio.play().then(() => {
+                            isPlaying = true;
+                            updateIcon();
+                        }).catch(e => console.log('Play error:', e));
+                        document.removeEventListener('touchstart', startMusic);
+                        document.removeEventListener('click', startMusic);
+                    };
+                    document.addEventListener('touchstart', startMusic);
+                    document.addEventListener('click', startMusic);
                 });
 
-                // Функция обновления иконки
                 function updateIcon() {
-                    if (isPlaying && !audio.muted) musicBtn.innerHTML = '🔊';
-                    else if (isPlaying && audio.muted) musicBtn.innerHTML = '🔇';
-                    else musicBtn.innerHTML = '🔇';
+                    if (!isPlaying) musicBtn.innerHTML = '🔇';
+                    else if (audio.muted) musicBtn.innerHTML = '🔇';
+                    else musicBtn.innerHTML = '🔊';
                 }
 
                 musicBtn.addEventListener('click', () => {
-                    if (!userInteracted) {
-                        userInteracted = true;
-                        // Первое нажатие: убираем mute и запускаем, если ещё не играет
-                        audio.muted = false;
-                        if (!isPlaying) {
-                            audio.play().then(() => {
-                                isPlaying = true;
-                                updateIcon();
-                            }).catch(e => console.log('Play failed:', e));
-                        } else {
-                            updateIcon();
-                        }
+                    if (isPlaying) {
+                        audio.pause();
+                        isPlaying = false;
                     } else {
-                        // Обычное переключение play/pause
-                        if (isPlaying) {
-                            audio.pause();
-                            isPlaying = false;
-                        } else {
-                            audio.play().then(() => {
-                                isPlaying = true;
-                            }).catch(e => console.log('Play failed:', e));
-                        }
+                        audio.play().then(() => {
+                            isPlaying = true;
+                            updateIcon();
+                        }).catch(e => console.log('Play error:', e));
                     }
                     updateIcon();
                 });
 
-                // Синхронизация иконки при изменении состояния аудио (например, если кончился трек)
-                audio.addEventListener('play', () => {
-                    isPlaying = true;
-                    updateIcon();
-                });
-                audio.addEventListener('pause', () => {
-                    isPlaying = false;
-                    updateIcon();
-                });
-                audio.addEventListener('volumechange', () => {
-                    if (audio.muted) updateIcon();
-                    else updateIcon();
-                });
+                audio.addEventListener('play', () => { isPlaying = true; updateIcon(); });
+                audio.addEventListener('pause', () => { isPlaying = false; updateIcon(); });
+                audio.addEventListener('volumechange', updateIcon);
             }
 
-            // Таймер
+            // --- Таймер (без изменений) ---
             const wedding = new Date("2026-06-20T14:10:00+03:00");
             const timerEl = document.getElementById('timer');
             function updateTimer() {
                 const now = new Date();
                 let diff = wedding - now;
                 if (diff <= 0) {
-                    timerEl.innerHTML = '<div class="timer-unit">Свадьба началась!</div>';
+                    if (timerEl) timerEl.innerHTML = '<div class="timer-unit">Свадьба началась!</div>';
                     return;
                 }
                 const d = Math.floor(diff / 86400000);
@@ -1049,12 +942,9 @@
                 const units = [d, h, m, s];
                 if (!timerEl.children.length) {
                     units.forEach(val => {
-                        const unit = document.createElement('div');
-                        unit.className = 'timer-unit';
-                        const digit = document.createElement('span');
-                        digit.className = 'timer-digit';
-                        digit.textContent = val.toString().padStart(2, '0');
-                        unit.appendChild(digit);
+                        const unit = document.createElement('div'); unit.className = 'timer-unit';
+                        const digit = document.createElement('span'); digit.className = 'timer-digit';
+                        digit.textContent = val.toString().padStart(2, '0'); unit.appendChild(digit);
                         timerEl.appendChild(unit);
                     });
                 } else {
@@ -1069,10 +959,12 @@
                     });
                 }
             }
-            updateTimer();
-            setInterval(updateTimer, 1000);
+            if (timerEl) {
+                updateTimer();
+                setInterval(updateTimer, 1000);
+            }
 
-            // Календарь
+            // --- Календарь (без изменений) ---
             const calendarEl = document.getElementById('calendar');
             if (calendarEl) {
                 const daysOfWeek = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
@@ -1086,124 +978,60 @@
                     if (d === 20) cls += ' highlight';
                     cells.push(`<span class="${cls}">${d}</span>`);
                 }
-                for (let i = 0; i < cells.length; i += 7) {
-                    html += '<div class="calendar-row">' + cells.slice(i, i+7).join('') + '</div>';
-                }
+                for (let i = 0; i < cells.length; i += 7) html += '<div class="calendar-row">' + cells.slice(i, i+7).join('') + '</div>';
                 calendarEl.innerHTML = html;
                 const allCells = document.querySelectorAll('.calendar-cell');
-                allCells.forEach((cell, index) => {
-                    setTimeout(() => {
-                        cell.style.opacity = '1';
-                        cell.style.transform = 'scale(1)';
-                    }, index * 15);
-                });
+                allCells.forEach((cell, index) => setTimeout(() => { cell.style.opacity = '1'; cell.style.transform = 'scale(1)'; }, index * 15));
                 const highlightCell = document.querySelector('.highlight');
-                if (highlightCell) {
-                    highlightCell.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        navigator.clipboard.writeText('20.06.2026');
-                        highlightCell.classList.add('clicked');
-                        setTimeout(() => highlightCell.classList.remove('clicked'), 400);
-                    });
-                }
+                if (highlightCell) highlightCell.addEventListener('click', (e) => { e.stopPropagation(); navigator.clipboard.writeText('20.06.2026'); highlightCell.classList.add('clicked'); setTimeout(() => highlightCell.classList.remove('clicked'), 400); });
             }
 
-            // Подсказки цветов
+            // --- Цветовые подсказки (без изменений) ---
             const swatches = document.querySelectorAll('.swatch');
             let tooltip = null;
             function showColorTooltip(colorName, x, y) {
-                if (!tooltip) {
-                    tooltip = document.createElement('div');
-                    tooltip.className = 'color-tooltip';
-                    document.body.appendChild(tooltip);
-                }
+                if (!tooltip) { tooltip = document.createElement('div'); tooltip.className = 'color-tooltip'; document.body.appendChild(tooltip); }
                 tooltip.textContent = colorName;
-                tooltip.style.left = x + 'px';
-                tooltip.style.top = y + 'px';
+                tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px';
                 tooltip.classList.add('show');
-                setTimeout(() => {
-                    if (tooltip) tooltip.classList.remove('show');
-                }, 1500);
+                setTimeout(() => tooltip?.classList.remove('show'), 1500);
             }
             swatches.forEach(swatch => {
                 swatch.addEventListener('click', (e) => {
                     const colorName = swatch.getAttribute('data-color');
                     const rect = swatch.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
-                    showColorTooltip(colorName, centerX, centerY);
+                    showColorTooltip(colorName, rect.left + rect.width/2, rect.top + rect.height/2);
                     e.stopPropagation();
                 });
             });
 
-            // Анимация программы
+            // --- Анимация программы и секций (без изменений) ---
             const programItems = document.querySelectorAll('.program-item');
             const programSection = document.getElementById('section-program');
             const programObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        programItems.forEach((item, idx) => {
-                            setTimeout(() => item.classList.add('visible'), idx * 150);
-                        });
+                        programItems.forEach((item, idx) => setTimeout(() => item.classList.add('visible'), idx * 150));
                         programObserver.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.2 });
             if (programSection) programObserver.observe(programSection);
-            if (programSection && programSection.getBoundingClientRect().top < window.innerHeight) {
-                programItems.forEach((item, idx) => setTimeout(() => item.classList.add('visible'), idx * 150));
-            }
+            if (programSection && programSection.getBoundingClientRect().top < window.innerHeight) programItems.forEach((item, idx) => setTimeout(() => item.classList.add('visible'), idx * 150));
 
-            // Появление секций
             const sections = document.querySelectorAll('.section');
             const sectionObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        sectionObserver.unobserve(entry.target);
-                    }
-                });
+                entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); sectionObserver.unobserve(entry.target); } });
             }, { threshold: 0.1 });
             sections.forEach(section => sectionObserver.observe(section));
 
-            // Кнопка наверх
             const scrollBtn = document.getElementById('scrollTop');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) scrollBtn.classList.add('visible');
-                else scrollBtn.classList.remove('visible');
-            });
+            window.addEventListener('scroll', () => { if (window.scrollY > 300) scrollBtn.classList.add('visible'); else scrollBtn.classList.remove('visible'); });
             scrollBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-            // Плавные якоря
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) target.scrollIntoView({ behavior: 'smooth' });
-                });
+                anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth' }); });
             });
-
-            // Лёгкий параллакс для фона
-            const blobs = [document.querySelector('.blob-1'), document.querySelector('.blob-2'), document.querySelector('.blob-3')];
-            if (blobs[0]) {
-                window.addEventListener('scroll', () => {
-                    const y = window.scrollY;
-                    if (blobs[0]) blobs[0].style.transform = `translateY(${y * 0.04}px)`;
-                    if (blobs[1]) blobs[1].style.transform = `translateY(${y * -0.02}px)`;
-                    if (blobs[2]) blobs[2].style.transform = `translateY(${y * 0.01}px)`;
-                });
-            }
-
-            // Плавающие точки
-            const bgContainer = document.querySelector('.bg-container');
-            for (let i = 0; i < 15; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'floating-dot';
-                dot.style.left = Math.random() * 100 + '%';
-                dot.style.top = Math.random() * 100 + '%';
-                dot.style.animationDelay = Math.random() * 20 + 's';
-                bgContainer.appendChild(dot);
-            }
         })();
     </script>
 </body>
